@@ -1,0 +1,576 @@
+<style>
+    @font-face {
+        font-family: 'Sensation';
+        src: url('../../fonts/Sansation.ttf') format('truetype');
+    }
+
+    #statusContainer {
+        border: 1px solid rgb(2, 179, 2);
+        color: rgb(2, 179, 2);
+        border-radius: 5px;
+        padding: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom-btn {
+        transition: background-color 0.3s;
+        /* Transição suave para o efeito de hover */
+    }
+
+    .custom-btn:hover {
+        background-color: #DCCCC3;
+        color: #000000;
+        border: 1px solid #000000;
+        /* Ajuste o padding desejado para o efeito de hover */
+    }
+
+    .cf-Input {
+        border: 0;
+        height: 45px;
+        width: auto;
+        margin: 0;
+        color: transparent;
+        cursor: pointer;
+    }
+
+    .cf-Input::-webkit-file-upload-button {
+        visibility: hidden;
+    }
+
+    .cf-Input::before {
+        content: 'Escolher arquivos';
+        display: inline-block;
+        background: #DCCCC3;
+        color: #000000;
+        border: 1px solid #00000027;
+        border-radius: 5px;
+        padding: 4px 8px;
+        outline: none;
+        white-space: nowrap;
+        cursor: pointer;
+        transform: translateX(-10px);
+    }
+
+    .cf-Input:hover::before {
+        background: #00000027;
+    }
+
+    .cf-Input:active::before {
+        background: #0000004d;
+    }
+
+    .cf-Input:focus::before {
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+    }
+
+    #submitButton {
+        background-color: #DCCCC3;
+        border: 1px solid #00000027;
+        color: #000000;
+        position: relative;
+        padding: 4px 8px;
+        transition: padding 0.3s;
+        border-radius: 5px;
+    }
+
+    /* Estilo para o ícone dentro do botão */
+    #submitButton .fas {
+        margin-right: 8px;
+        /* Espaçamento entre o ícone e o texto */
+    }
+
+    /* Estilo do botão no hover */
+    #submitButton:hover {
+        background-color: #b1a39c;
+        /* Nova cor de fundo no hover */
+        color: #ffffff;
+        padding: 6px 10px;
+        /* Cor do texto no hover */
+    }
+
+    /* Efeito de elevação no hover */
+    #submitButton:hover::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        /* Ajuste a posição conforme necessário */
+        left: -5px;
+        /* Ajuste a posição conforme necessário */
+        right: -5px;
+        /* Ajuste a posição conforme necessário */
+        bottom: -5px;
+        /* Ajuste a posição conforme necessário */
+        border: 2px solid #00000027;
+        z-index: -1;
+        transition: all 0.3s;
+    }
+</style>
+
+
+<!-- Begin Page Content -->
+<div class="d-flex flex-column flex-xl-row p-4 align-items-start">
+
+    <div class="col-12  container">
+        <div class="col-12 row">
+            <!-- Lista de Anúncios -->
+            <div class="col-12 col-xl-8 pl-4 pr-4 ml-xl-4 mt-4 d-flex flex-column">
+
+                <!-- Exemplo de Card de Anúncio -->
+                <div class=" mb-4" style="border: 1px solid #00000027;border-radius:10px;">
+                    <form style="display:none">
+                        <input id="advertisementId" type="hidden" value="{{advertisementId}}">
+                    </form>
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div id="carouselInner" class="carousel-inner" style="border-radius: 10px 10px 0 0 ;">
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <div class="card-body pb-0 ">
+                        <h1 id="title" style="color: #000000; font-weight:700; font-family:'Sensation'; font-size:25px;">
+                        </h1>
+                        <p class="card-text" id="description"></p>
+                        <hr>
+                        <div>
+                            <h1 class="mb-4 mt-4"
+                                style="color: #000000; font-weight:700; font-family:'Sensation'; font-size:20px;">O que
+                                esse imóvel oferece</h1>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled" style="padding: 0;">
+                                        <li class="mt-2"><i class="fas fa-ruler-combined fa-lg mr-2"></i>
+                                            Área Construída: <strong id="builtUpArea"> m²</strong> </li>
+                                        <li class="mt-2"><i class="fas fa-bath fa-lg  mr-2"></i>
+                                            Número de Banheiros: <strong id="bathNumber"></strong></li>
+                                        <li class="mt-2"><i class="fas fa-door-open fa-lg  mr-2"></i>
+                                            Número de Cômodos: <strong id="roomNumber"></strong></li>
+                                        <li class="mt-2"><i class="fas fa-car fa-lg  mr-2"></i>
+                                            Vagas na Garagem: <strong id="parkingSpaces"></strong></li>
+                                        <li class="mt-2"><i class="fas fa-home fa-lg  mr-2"></i>
+                                            <strong id="propertyType"></strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled" style="padding: 0;">
+                                        <li class="mt-2"><i class="fas fa-sun fa-lg  mr-2"></i> Incidência
+                                            Solar <strong id="solarIncidence">{{solarIncidence}}</strong> </li>
+                                        <li class="mt-2"><i class="fas fa-couch fa-lg  mr-2"></i>
+                                            <strong id="furnished">{{furnished}}</strong>
+                                        </li>
+                                        <li class="mt-2"><i class="fas fa-swimming-pool fa-lg  mr-2"></i>
+                                            <strong id="pool"></strong> Piscina
+                                        </li>
+                                        <li class="mt-2"><i class="fas fa-fire fa-lg  mr-2"></i>
+                                            <strong id="barbecue"></strong> Churrasqueira
+                                        </li>
+                                        <li class="mt-2"><i class="fas fa-basketball-ball fa-lg  mr-2"></i>
+                                            <strong id="sportsCourt"></strong> Quadra Esportiva
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Fim do Exemplo de Card de Anúncio -->
+            </div>
+
+            <div class="col-12 col-xl-3 pt-0 pt-xl-4 ml-2 ml-xl-4 d-flex flex-column">
+                <div class="pl-4 pt-4 pl-4 h-auto w-auto" style="border-radius: 10px; border:1px solid #00000027">
+                    <h1 style="color: #000000; font-weight:700; font-family:'Sensation'; font-size:30px;"><strong id="businessValue">R$
+                            </strong></h1>
+                    <ul class="list-unstyled mt-2">
+                        <li class="mt-2"><i class="fas fa-tags fa-sm mr-1"></i> <strong id="businessType">{{businessType}}</strong></li>
+                        <li class="mt-2"><i class="fas fa-calendar-alt fa-sm mr-1"></i> Publicado em
+                            <strong id="publiDate">{{publiDate}}</strong>
+                        </li>
+                        <li class="mt-2"><i class="fas fa-map-marker-alt fa-sm mr-1"></i> <strong id="address">{{address}}</strong>
+                        </li>
+                    </ul>
+                </div>
+
+                <button id="favoriteButton" class="btn top-0 end-0 mt-2" data-logged="{{isLogged}}" data-advertising-id="{{advertisingId}}"
+                    name="favoriteButton" style="border: 1px solid #00000027; z-index: 1; background-color: #f8f9fc;">
+                    <i class="fas fa-heart"></i>
+                    <span class="ml-2">Favoritar</span>
+                </button>
+
+
+                <div class="pl-4 pt-4 mt-4 h-auto" style="border-radius: 10px; border:1px solid #00000027">
+                    <h1 style="color: #000000; font-weight:700; font-family:'Sensation'; font-size:20px;">Informações de
+                        Contato</h1>
+
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-user fa-lg mr-2 mt-4"></i> <strong id="name">{{name}}</strong></li>
+                        <li id="phone"><i class="fas fa-phone fa-lg mr-2 mt-4"></i>Telefone: <strong><a
+                             href="tel:{{phone}}"><br />{{phone}}</a></strong></li>
+                        <li id="whatsapp"><i class="fas fa-phone-alt fa-lg mr-2 mt-4"></i>Whatsapp: <strong><a
+                             href="https://wa.me/{{whatsapp}}" target="_blank"><br />{{whatsapp}}</a></strong>
+                        </li>
+                        <li id="instagram"><i class="fab fa-instagram fa-lg mr-2 mt-4"></i>Instagram: <strong><a
+                             href="https://www.instagram.com/{{instagram}}"
+                            target="_blank"><br />@{{instagram}}</a></strong></li>
+                        <li id="email"><i class="fas fa-envelope fa-lg mr-2 mt-4"></i>Email: <strong><a
+                             href="mailto:{{email}}"><br />{{email}}</a></strong></li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+
+
+<!--Favorite Visitor Modal-->
+<div class="modal fade" id="favoriteModal" tabindex="-1" role="dialog" aria-labelledby="favoriteModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="favoriteModalLabel">Necessário autenticar-se!</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">Para acessar essa e outras funcionalidades, cadastre-se e faça login no sistema.</div>
+        <div class="modal-footer">
+
+            <a class="btn btn-primary" href="/register">Cadastrar-se</a>
+            <a class="btn btn-primary" href="/login">Efetuar login</a>
+            
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", async function() {
+
+        const response = await getAdvertisement();
+
+
+        if(response.success){
+
+            var data = response.data;
+
+            const carouselInner = document.getElementById('carouselInner');
+            
+            const imagePaths = Object.values(data.imagePaths);
+
+            imagePaths.forEach((imagePath, index) => {
+
+                const div = document.createElement('div');
+                div.className = 'carousel-item';
+                if (index === 0) {
+                  div.classList.add('active'); 
+                }
+            
+ 
+                const img = document.createElement('img');
+                img.src = `/image/advertisement/${imagePath}`;
+                img.className = 'd-block w-100';
+                img.alt = '...';
+            
+
+                div.appendChild(img);
+            
+
+                carouselInner.appendChild(div);
+              });
+
+
+
+
+
+            var title = document.getElementById("title");
+            title.innerHTML = data.title;
+
+            var description = document.getElementById("description");
+            description.innerHTML = data.description;
+
+
+            var builtUpArea = document.getElementById("builtUpArea");
+            builtUpArea.innerHTML = data.builtUpArea + builtUpArea.innerHTML;
+
+            var bathNumber = document.getElementById("bathNumber");
+            bathNumber.innerHTML = data.bathNumber;
+
+
+            var roomNumber = document.getElementById("roomNumber");
+            roomNumber.innerHTML = data.roomNumber;
+
+
+            var parkingSpaces = document.getElementById("parkingSpaces");
+            parkingSpaces.innerHTML = data.parkingSpaces;
+
+            var propertyType = document.getElementById("propertyType");
+            propertyType.innerHTML = data.propertyType;
+
+            var solarIncidence = document.getElementById("solarIncidence");
+            solarIncidence.innerHTML = data.solarIncidence;
+
+            var furnished = document.getElementById("furnished");
+            furnished.innerHTML = data.furnished;
+
+            var pool = document.getElementById("pool");
+            pool.innerHTML = data.pool + pool.innerHTML;
+
+
+            var barbecue = document.getElementById("barbecue");
+            barbecue.innerHTML = data.barbecue + barbecue.innerHTML;
+            
+            var sportsCourt = document.getElementById("sportsCourt");
+            sportsCourt.innerHTML = data.sportsCourt + sportsCourt.innerHTML;
+
+            
+            var businessValue = document.getElementById("businessValue");
+            businessValue.innerHTML = businessValue.innerHTML + data.businessValue;
+
+            var businessType = document.getElementById("businessType");
+            businessType.innerHTML = data.businessType;
+
+            var publiDate = document.getElementById("publiDate");
+            publiDate.innerHTML = data.publiDate;
+
+            var address = document.getElementById("address");
+            address.innerHTML = data.address;
+
+
+            var name = document.getElementById("name");
+            name.innerHTML = data.name;
+
+
+            var phone = document.getElementById("phone");
+            var whatsapp = document.getElementById("whatsapp");
+            var instagram = document.getElementById("instagram");
+            var email = document.getElementById("email");
+
+
+            if (!data.isLogged == true){
+                phone.remove();
+                whatsapp.remove();
+                instagram.remove();
+                email.remove();
+            } else {
+                let phoneAnchor = phone.querySelector("a");
+                phoneAnchor.innerText = data.phone;
+                phoneAnchor.href = "tel:" + data.phone;
+
+                let whatsappAnchor = whatsapp.querySelector("a");
+                whatsappAnchor.innerText = data.whatsapp;
+                whatsappAnchor.href = "https://wa.me/" + data.whatsapp;
+
+                let instagramAnchor = instagram.querySelector("a");
+                instagramAnchor.innerText = data.instagram;
+                instagramAnchor.href = "https://www.instagram.com/" + data.instagram;
+
+                let emailAnchor = email.querySelector("a");
+                emailAnchor.innerText = data.email;
+                emailAnchor.href = "mailto:" + data.email;
+
+            }
+
+
+            const favoriteButton = document.getElementById("favoriteButton");
+
+            
+            if(data.isLogged){
+
+                const favoriteForm = document.createElement('form');
+                favoriteForm.setAttribute('style', 'display: none;')
+
+                const favoriteInput = document.createElement('input');
+                favoriteInput.setAttribute('type', 'checkbox');
+
+                favoriteForm.appendChild(favoriteInput);
+
+                favoriteButton.appendChild(favoriteForm);
+
+                favoriteInput.checked = data.favoriteChecked;
+                favoriteInput.name = "favorite-input-" + data.advertisementId
+
+                const favoriteIcon = favoriteButton.querySelector("i");
+
+                favoriteIcon.style.color = data.favoriteChecked ? "red" : "#858796";
+
+
+                const favoriteLabel = favoriteButton.querySelector("span");
+                favoriteLabel.innerHTML = data.favoriteChecked ? "Desfavoritar" : "Favoritar";
+
+
+                favoriteButton.addEventListener("click", async (event) => {
+                    event.preventDefault();
+
+                    favoriteInput.checked = !favoriteInput.checked
+
+                    createFavoriteEvent(favoriteInput, data.advertisementId);
+                });
+
+            } else {
+                favoriteButton.setAttribute('data-toggle', 'modal');
+                favoriteButton.setAttribute('data-target', '#favoriteModal');
+            }
+
+
+            console.log(response.data)
+
+        } else {
+            return false;
+        }
+
+    });
+
+
+
+
+    async function getAdvertisement() {
+
+        const advertisementId = document.getElementById("advertisementId").value;
+
+        console.log(advertisementId);
+
+        try {
+
+            let response = await fetch("/api/open-advertisement/" + advertisementId, {
+                method: "GET",
+            });
+
+            const data = await response.json();
+            return data;
+        }
+
+        catch (error) {
+            const data = {
+                success: false,
+                message: "Erro na conexão. Tente novamente."
+            };
+            return data;
+        }
+    }
+
+</script>
+
+
+
+
+
+
+<!-- Advertising Favorite Event-->
+<script>
+
+    function createFavoriteEvent(advertisingFavoriteInput, advertisingId) {
+
+        Swal.fire({
+            text: `Deseja ${advertisingFavoriteInput.checked ? "favoritar" : "desfavoritar"} anúncio?`,
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonText: "Confirmar",
+            position: "center"
+        }).then(async (result) => {
+
+            if (result.isConfirmed) {
+
+                Swal.fire({
+                    title: `${advertisingFavoriteInput.checked ? "Favoritando" : "Desfavoritando"} anúncio...`,
+                    didOpen: async () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: () => !Swal.isLoading(),
+                });
+
+
+                const data = await editFavorite(advertisingFavoriteInput, advertisingId);
+
+                Swal.fire({
+                    title: data.message,
+                    text: "",
+                    icon: `${data.success == true ? "success" : "error"}`,
+                    position: "center",
+                }).then((result) => {
+                    if(data.success){
+
+                        const buttonElement = advertisingFavoriteInput.closest('button');
+                        const favoriteIcon = buttonElement.querySelector("i");
+                        const favoriteLabel = buttonElement.querySelector("span");
+
+                        if(advertisingFavoriteInput.checked){
+                            favoriteIcon.style.color = "red";
+                            favoriteLabel.innerText = "Desfavoritar";
+                        } else {
+                            favoriteIcon.style.color = "#858796";
+                            favoriteLabel.innerText = "Favoritar";
+                        }
+                    }
+                });
+            } else {
+                advertisingFavoriteInput.checked = !advertisingFavoriteInput.checked;
+            }
+        });
+
+    }
+
+    async function editFavorite(advertisingFavoriteInput, advertisingId) {
+
+        let checked = advertisingFavoriteInput.checked ? "true" : "false";
+
+        try {
+
+            let response = await fetch("/api/manage-favorite", {
+                method: "POST",
+                body: JSON.stringify({ advertisementId: advertisingId, favorite: checked }),
+            });
+
+            const data = await response.json();
+            return data;
+        }
+
+        catch (error) {
+            const data = {
+                success: false,
+                message: "Erro na conexão. Tente novamente."
+            };
+            return data;
+        }
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

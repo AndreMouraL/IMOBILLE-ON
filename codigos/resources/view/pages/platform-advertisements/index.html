@@ -1,0 +1,592 @@
+<!-- Begin Page Content -->
+<div class="d-flex flex-column flex-xl-row p-4 align-items-start">
+
+    <div class="col-12  container">
+        <div class="col-12 row">
+            <!-- Formulário de Filtros -->
+            <div class="col-12 col-xl-3 p-0 pt-xl-4 d-flex flex-column">
+
+                <form class="p-4" style="border-radius:10px; border:1px solid #00000027;">
+
+                    <h1 class="mb-4" style="color: #000000; font-weight:700; font-family:'Sensation'; font-size:20px;">
+                        Filtros de Busca</h1>
+                    <div class="form-group">
+                        <label for="valorMaximo">Valor Máximo</label>
+                        <input type="number" class="form-control" id="valorMaximo" name="valorMaximo"
+                            placeholder="Valor Máximo">
+                    </div>
+                    <div class="form-group">
+                        <label for="valorMinimo">Valor Mínimo</label>
+                        <input type="number" class="form-control" id="valorMinimo" name="valorMinimo"
+                            placeholder="Valor Mínimo">
+                    </div>
+                    <div class="form-group">
+                        <label for="areaConstruidaMaxima">Área Construída Máxima (m²)</label>
+                        <input type="number" class="form-control" id="areaConstruidaMaxima" name="areaConstruidaMaxima"
+                            placeholder="Área Construída Máxima">
+                    </div>
+                    <div class="form-group">
+                        <label for="areaConstruidaMinima">Área Construída Mínima (m²)</label>
+                        <input type="number" class="form-control" id="areaConstruidaMinima" name="areaConstruidaMinima"
+                            placeholder="Área Construída Mínima">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="piscina" name="piscina">
+                        <label class="form-check-label" for="piscina">Piscina</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="churrasqueira" name="churrasqueira">
+                        <label class="form-check-label" for="churrasqueira">Churrasqueira</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="quadraEsportiva" name="quadraEsportiva">
+                        <label class="form-check-label" for="quadraEsportiva">Quadra Esportiva</label>
+                    </div>
+                    <button type="submit" class="btn btn-light mt-3"
+                        style="background-color: #DCCCC3; border-color:#00000027">Aplicar Filtros</button>
+                </form>
+            </div>
+
+
+            <!-- Lista de Anúncios -->
+            <div class="col-12 col-xl-8 p-4 ml-xl-4 mt-4 d-flex flex-column"
+                style="border-radius:10px; border:1px solid #00000027;">
+                <h1 style="color: #000000; font-weight:700; font-family:'Sensation'; font-size:20px;">Anúncios
+                    Encontrados</h1>
+                <ul id="advertisings-list-container" class="list-unstyled">
+ 
+                </ul>
+
+                <!-- Mensagem de erro -->
+                <h4 class="d-none error-message text-dark text-center mt-5 mx-auto w-100" >Nenhum anúncio encontrado</h4>
+
+                
+                <!-- advertisings List Pagination-->
+                <nav id="advertisings-pagination" class="d-none justify-content-center" aria-label="Page navigation example">
+                    <ul class="pagination m-0 justify-content-center" style="cursor: pointer;"></ul>
+                </nav>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!--advertisings Item Template-->
+    <template id="advertising-item-template">
+
+        <li class="mt-4 advertising-card-container" style="cursor: pointer;">
+            <a class="card d-block bg-light text-decoration-none text-dark">
+                <div class="row no-gutters">
+                    <!-- Espaço para a foto -->
+                    <div class="col-md-4">
+                        <div class="card-img"
+                            style="background-size: cover;background-position: center; height: 100%;">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <!-- Título -->
+                            <h5 class="card-title mb-3"></h5>
+
+                            <!-- Valor do Anúncio -->
+                            <div class="mb-2 value">
+                                <strong>Valor:</strong> R$
+                            </div>
+
+                            <!-- Endereço -->
+                            <div class="mb-2 address">
+                                <strong>Endereço:</strong>
+                            </div>
+
+                            <!-- Descrição -->
+                            <p class="card-text mb-0 description"></p>
+
+                            <button class="btn top-0 end-0 mt-2 favorite-button"
+                                style="border: 1px solid #00000027; z-index: 1; background-color: #f8f9fc;">
+                                <i class="fas fa-heart"></i>
+                                <span class="ml-2">Favoritar</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </a>
+        </li>
+    </template>
+
+</div>
+<!-- /.container-fluid -->
+
+
+
+<!--Favorite Visitor Modal-->
+<div class="modal fade" id="favoriteModal" tabindex="-1" role="dialog" aria-labelledby="favoriteModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="favoriteModalLabel">Necessário autenticar-se!</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">Para acessar essa e outras funcionalidades, cadastre-se e faça login no sistema.</div>
+        <div class="modal-footer">
+
+            <a class="btn btn-primary" href="/register">Cadastrar-se</a>
+            <a class="btn btn-primary" href="/login">Efetuar login</a>
+            
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<!-- advertisings List Pagination Script-->
+<script>
+
+    var advertisings = [];
+    const advertisingsPerPage = 4;
+    const pageShowLimit = 3;
+
+
+
+    function renderInitialAdvertisingsPage(container) {
+        const totalPages = Math.ceil(advertisings.length / advertisingsPerPage);
+        var finalIndex = advertisings.length < advertisingsPerPage ? advertisings.length : advertisingsPerPage;
+        for (i = 0; i < finalIndex; i++) {
+            container.appendChild(advertisings[i])
+        }
+
+        if (totalPages > 1) {
+            document.getElementById("advertisings-pagination").classList.add("d-flex");
+            document.getElementById("advertisings-pagination").classList.remove("d-none");
+        }
+    }
+
+
+
+
+
+    function renderAdvertisingsPage(initialIndex, finalIndex, container) {
+        container.innerHTML = '';
+        for (i = initialIndex; i < finalIndex; i++) {
+            container.appendChild(advertisings[i]);
+        }
+    }
+
+
+
+
+
+    function pageShowLimitEvents(initialShowPageNumber, finalShowPageNumber, totalPages) {
+
+        //mostra apenas os itens de paginação no intervalo definido
+        document.getElementById("advertisings-pagination").querySelectorAll(".page-number").forEach((pageNumber, index) => {
+            if (index >= initialShowPageNumber && index < finalShowPageNumber) {
+                pageNumber.classList.remove("d-none");
+            } else {
+                pageNumber.classList.add("d-none");
+            }
+        });
+
+
+
+        //mostra e esconde o botão "anterior"
+        if (initialShowPageNumber + 1 > pageShowLimit) {
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[0].classList.add('d-flex');
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[0].classList.remove('d-none');
+        } else {
+            if (!document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[0].classList.contains('d-none')) {
+                document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[0].classList.add('d-none');
+                document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[0].classList.remove('d-flex');
+            }
+        }
+
+        //mostra e esconde o botão "próximo"
+        if (initialShowPageNumber + 1 <= totalPages - pageShowLimit) {
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[1].classList.add('d-flex');
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[1].classList.remove('d-none');
+        } else {
+            if (!document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[1].classList.contains('d-none')) {
+                document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[1].classList.add('d-none');
+                document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[1].classList.remove('d-flex');
+            }
+        }
+    }
+
+
+
+
+    //adiciona os eventos nos itens da paginação
+    function addPaginationEvents() {
+
+        const totalPages = Math.ceil(advertisings.length / advertisingsPerPage);
+
+        document.getElementById("advertisings-pagination").querySelectorAll(".page-number").forEach((pageItem) => {
+            const container = document.getElementById('advertisings-list-container');
+
+            pageItem.addEventListener('click', (event) => {
+                event.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                //tira a classe selected de todos e coloca no item que foi clicado
+                document.getElementById("advertisings-pagination").querySelectorAll(".page-number").forEach((pageNumber) => {
+                    if (pageNumber.querySelector('.page-link').classList.contains('page-link-selected')) {
+                        pageNumber.querySelector('.page-link').classList.remove('page-link-selected');
+                    }
+                });
+                pageItem.querySelector('.page-link').classList.add('page-link-selected');
+
+                //passa os parâmetros necessários para renderizar a página clicada
+                var initialIndex = advertisingsPerPage * (parseInt(pageItem.innerText) - 1);
+                var calculateFinalIndex = advertisingsPerPage * parseInt(pageItem.innerText);
+                var finalIndex = advertisings.length < calculateFinalIndex ? advertisings.length : calculateFinalIndex;
+                renderAdvertisingsPage(initialIndex, finalIndex, container)
+
+            });
+
+        });
+
+        //define os eventos de clique para os botões "anterior" e "próximo"
+        var initialShowPageNumber = 0
+        var finalShowPageNumber = pageShowLimit;
+
+        if (totalPages > pageShowLimit) {
+            //anterior
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[0].addEventListener('click', (event) => {
+                console.log('ant');
+                event.preventDefault();
+                initialShowPageNumber = initialShowPageNumber - pageShowLimit;
+                finalShowPageNumber = finalShowPageNumber - pageShowLimit;
+                pageShowLimitEvents(initialShowPageNumber, finalShowPageNumber, totalPages)
+            });
+
+            //próximo
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-show-limit")[1].addEventListener('click', (event) => {
+                console.log('prox');
+                event.preventDefault();
+                initialShowPageNumber = initialShowPageNumber + pageShowLimit;
+                finalShowPageNumber = finalShowPageNumber + pageShowLimit;
+
+                pageShowLimitEvents(initialShowPageNumber, finalShowPageNumber, totalPages)
+            });
+        }
+    }
+
+
+
+
+    //cria a paginação 
+    function addPagination() {
+        const totalPages = Math.ceil(advertisings.length / advertisingsPerPage);
+
+        //cria o botão "anterior"
+        if (totalPages > pageShowLimit) {
+            var paginationItem = document.createElement('li');
+            paginationItem.classList.add("page-item");
+            paginationItem.classList.add("page-show-limit");
+
+            var paginationItemAnchor = document.createElement('a');
+            paginationItemAnchor.classList.add("page-link");
+            paginationItemAnchor.style.color = "var(--black)";
+            paginationItemAnchor.innerText = "Anterior";
+
+            paginationItem.appendChild(paginationItemAnchor);
+
+            paginationItem.classList.add('d-none');
+
+            document.getElementById("advertisings-pagination").querySelector(".pagination").appendChild(paginationItem);
+        }
+
+        //cria os números da paginação
+        for (i = 1; i <= totalPages; i++) {
+            var paginationItem = document.createElement('li');
+            paginationItem.classList.add("page-item");
+            paginationItem.classList.add("page-number");
+
+            var paginationItemAnchor = document.createElement('a');
+            paginationItemAnchor.classList.add("page-link");
+            paginationItemAnchor.style.color = "var(--black)";
+            paginationItemAnchor.innerText = i;
+
+            paginationItem.appendChild(paginationItemAnchor);
+
+            document.getElementById("advertisings-pagination").querySelector(".pagination").appendChild(paginationItem);
+        }
+
+        //cria o botão "próximo"
+        if (totalPages > pageShowLimit) {
+            var paginationItem = document.createElement('li');
+            paginationItem.classList.add("page-item");
+            paginationItem.classList.add("page-show-limit");
+
+            var paginationItemAnchor = document.createElement('a');
+            paginationItemAnchor.classList.add("page-link");
+            paginationItemAnchor.style.color = "var(--black)";
+            paginationItemAnchor.innerText = "Próximo";
+
+            paginationItem.appendChild(paginationItemAnchor);
+
+            paginationItem.classList.add('d-flex');
+
+            document.getElementById("advertisings-pagination").querySelector(".pagination").appendChild(paginationItem);
+        }
+
+        addPaginationEvents();
+        //define a página um como selecionada por padrão
+        document.getElementById("advertisings-pagination").querySelector(".page-number").querySelector('.page-link').classList.add('page-link-selected');
+
+        //esconde as páginas que excedem o limite de paginação
+        if (document.getElementById("advertisings-pagination").querySelectorAll(".page-number").length > pageShowLimit) {
+            document.getElementById("advertisings-pagination").querySelectorAll(".page-number").forEach((pageNumber, index) => {
+                if (index >= pageShowLimit) {
+                    pageNumber.classList.add('d-none');
+                }
+            });
+        }
+    }
+
+
+
+
+
+    async function getAllAdvertisings() {
+
+        ///try {
+            let response = await fetch("/api/platform-advertisements", {
+                method: "GET"
+            });
+
+            let data = await response.json();
+
+            console.log(data);
+            
+            return data;
+        //} catch (error) {
+            //return {
+              //  success: false,
+                message: "Não foi possível carregar as anúnicios. Tente novamente mais tarde."
+           // }
+        //}
+    }
+
+
+
+
+
+    async function createCardsPage() {
+
+        const template = document.getElementById('advertising-item-template');
+        const container = document.getElementById('advertisings-list-container');
+
+
+        const response = await getAllAdvertisings();
+
+
+ 
+        if (response.success) {
+            if (response.data.length > 0) {
+                response.data.forEach((item) => {
+
+                    const clone = document.importNode(template.content, true);
+
+                    const advertisingId = item.id;
+
+                    const image = clone.querySelector('.card-img');
+                    image.style.backgroundImage = 'url("/image/advertisement/' + item.image + '")';
+                    image.onclick = function () { 
+                        window.location.href = `/open-advertisement/${advertisingId}`
+                    };
+
+                    const title = clone.querySelector('.card-title');
+                    title.innerHTML = item.title;
+                    title.onclick = function () { 
+                        window.location.href = `/open-advertisement/${advertisingId}` 
+                    };
+
+
+                    const value = clone.querySelector('.value');
+                    value.innerHTML += " " + item.businessValue;
+                    value.onclick = function () { 
+                        window.location.href = `/open-advertisement/${advertisingId}`
+                    };
+
+
+                    const address = clone.querySelector('.address');
+                    address.innerHTML += " " + item.address;
+                    address.onclick = function () { 
+                        window.location.href = `/open-advertisement/${advertisingId}`
+                    };
+
+                    const description = clone.querySelector('.description');
+                    description.innerHTML  =  item.description;
+                    description.onclick = function () { 
+                        window.location.href = `/open-advertisement/${advertisingId}` 
+                    };
+
+
+
+                    const favoriteButton = clone.querySelector('.favorite-button');
+
+                    if(item.isLogged){
+
+                        const favoriteForm = document.createElement('form');
+                        favoriteForm.setAttribute('style', 'display: none;')
+
+                        const favoriteInput = document.createElement('input');
+                        favoriteInput.setAttribute('type', 'checkbox');
+
+                        favoriteForm.appendChild(favoriteInput);
+
+                        favoriteButton.appendChild(favoriteForm);
+
+                        favoriteInput.checked = item.favorite;
+                        favoriteInput.name = "favorite-input-" + advertisingId;
+
+                        const favoriteIcon = favoriteButton.querySelector("i");
+
+                        favoriteIcon.style.color = item.favorite ? "red" : "#858796";
+
+    
+                        const favoriteLabel = favoriteButton.querySelector("span");
+                        favoriteLabel.innerHTML = item.favorite ? "Desfavoritar" : "Favoritar";
+
+
+                        favoriteButton.addEventListener("click", async (event) => {
+                            event.preventDefault();
+
+                            favoriteInput.checked = !favoriteInput.checked
+
+                            createFavoriteEvent(favoriteInput, advertisingId);
+                        });
+
+                    } else {
+                        favoriteButton.setAttribute('data-toggle', 'modal');
+                        favoriteButton.setAttribute('data-target', '#favoriteModal');
+                    }
+
+
+                    const element = clone.children[0];
+                    advertisings.push(element);
+
+                });
+
+                renderInitialAdvertisingsPage(container);
+                addPagination();
+
+            } else {
+                container.parentNode.querySelector(".error-message").innerHTML = "Nenhum anúncio foi encontrado";
+                container.parentNode.querySelector(".error-message").classList.add("d-flex");
+                container.parentNode.querySelector(".error-message").classList.remove("d-none");
+            }
+
+        } else {
+            container.parentNode.querySelector(".error-message").innerHTML = "Houve um problema ao carregar os anúncios";
+            container.parentNode.querySelector(".error-message").classList.add("d-flex");
+            container.parentNode.querySelector(".error-message").classList.remove("d-none");
+        }
+
+    }
+
+
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        createCardsPage()
+    });
+
+
+</script>
+
+
+
+
+
+
+<!-- Advertising Favorite Event-->
+<script>
+
+    function createFavoriteEvent(advertisingFavoriteInput, advertisingId) {
+
+        Swal.fire({
+            text: `Deseja ${advertisingFavoriteInput.checked ? "favoritar" : "desfavoritar"} anúncio?`,
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonText: "Confirmar",
+            position: "center"
+        }).then(async (result) => {
+
+            if (result.isConfirmed) {
+
+                Swal.fire({
+                    title: `${advertisingFavoriteInput.checked ? "Favoritando" : "Desfavoritando"} anúncio...`,
+                    didOpen: async () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: () => !Swal.isLoading(),
+                });
+
+
+                const data = await editFavorite(advertisingFavoriteInput, advertisingId);
+
+                Swal.fire({
+                    title: data.message,
+                    text: "",
+                    icon: `${data.success == true ? "success" : "error"}`,
+                    position: "center",
+                }).then((result) => {
+                    if(data.success){
+
+                        const buttonElement = advertisingFavoriteInput.closest('button');
+                        const favoriteIcon = buttonElement.querySelector("i");
+                        const favoriteLabel = buttonElement.querySelector("span");
+
+                        if(advertisingFavoriteInput.checked){
+                            favoriteIcon.style.color = "red";
+                            favoriteLabel.innerText = "Desfavoritar";
+                        } else {
+                            favoriteIcon.style.color = "#858796";
+                            favoriteLabel.innerText = "Favoritar";
+                        }
+                    }
+                });
+            } else {
+                advertisingFavoriteInput.checked = !advertisingFavoriteInput.checked;
+            }
+        });
+
+    }
+
+    async function editFavorite(advertisingFavoriteInput, advertisingId) {
+
+        let checked = advertisingFavoriteInput.checked ? "true" : "false";
+
+        try {
+
+            let response = await fetch("/api/manage-favorite", {
+                method: "POST",
+                body: JSON.stringify({ advertisementId: advertisingId, favorite: checked }),
+            });
+
+            const data = await response.json();
+            return data;
+        }
+
+        catch (error) {
+            const data = {
+                success: false,
+                message: "Erro na conexão. Tente novamente."
+            };
+            return data;
+        }
+    }
+
+</script>

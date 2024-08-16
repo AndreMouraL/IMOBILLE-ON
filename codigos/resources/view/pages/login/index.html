@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/sb-admin-2/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+        #login-button {
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Adiciona transição suave */
+        }
+    
+        #login-button:hover {
+            background-color: #6c5e55; /* Nova cor de fundo no hover */
+            border-color: #6c5e55; /* Nova cor da borda no hover */
+            color: #fff; /* Nova cor do texto no hover */
+        }
+    </style>
+
+
+
+
+    <!-- Favicon -->
+    <link rel="icon" href="/sb-admin-2/img/icone-pagina.svg" type="image/x-icon">
+
+
+    <!--JQuery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery/jquery.min.js" defer></script>
+    <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js" defer></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/sb-admin-2/js/sb-admin-2.min.js" defer></script>
+
+    <!-- Font Awesome-->
+    <script src="https://kit.fontawesome.com/7b6d6bdbf9.js" crossorigin="anonymous"></script>
+    
+    <!--Sweet alert 2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+
+
+
+<body>
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5 align-items-center">
+            <div class="card-body p-0"  style="width: 100%; ">
+                
+                <div class="d-flex flex-column flex-lg-row pb-0" >
+
+                    <div class="col-12 col-lg-6 p-0 d-flex align-items-center justify-content-center" style="background-color:#DCCCC3;">
+                        <img src="/sb-admin-2/img/icone-image.svg" width="70%">
+                    </div>
+
+                    <div class="col-12 col-lg-6 p-0 d-flex align-items-center">
+                        <div class="form-container p-4 w-100" >
+
+                            <form id="login-form" class="user pl-4 pr-4">
+                                <div class="text-center">
+                                    <h1 class="h2 text-gray-900 mb-4 mt-4" style="color: #937F74;">Entrar no Sistema</h1>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control " id="identifier" name="identifier"
+                                            placeholder="Email ou CPF" >
+                                    </div>
+                                </div>
+                                
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control"
+                                            id="password" name="password" placeholder="Senha" >
+                                    </div>
+                                    
+                                </div>
+
+                                <div class=" d-flex justify-content-center m-4">
+                                    <button id="login-button" class="btn btn-primary btn-user btn-block w-50" 
+                                        style="background-color: #937F74; border-color:#937F74">
+                                        Entrar
+                                    </button>
+                                </div>
+
+                            </form>
+                            
+                            <hr class="w-50">
+                            
+                            <div class="text-center ">
+                                <a class="small" href="/register" style="color: #937F74;">Ainda não possui conta? Cadastrar!</a>
+                            </div>
+                            
+                            <div class="text-center">
+                                <a class="small" href="/forgot-password" style="color: #937F74;">Esqueceu a senha?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="/home" style="color: #937F74;">Volta para o início!</a>
+                            </div>
+                            
+
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery/jquery.min.js"></script>
+    <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/sb-admin-2/js/sb-admin-2.min.js"></script>
+
+
+    <!--Mask-->
+
+
+    <script>
+
+        //------------------- Identifier ------------------//
+        document.getElementById("identifier").addEventListener("input", function () {
+        if (this.value.length > 100) {
+            this.value = this.value.substring(0, 100);
+        }
+
+        const cursorPosition = this.selectionStart;
+
+        const identifierRegex = /[^a-zA-Z0-9@_.-]/g;
+
+        if(identifierRegex.test(this.value)){
+            this.value = this.value.replace(identifierRegex, "");
+            this.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
+            return;
+        }
+        this.setSelectionRange(cursorPosition, cursorPosition);
+    });
+    
+
+
+    </script>
+
+
+    <!--Submit Form-->
+    <script>
+        const loginButton = document.querySelector("#login-button");
+  
+        loginButton.addEventListener("click", async (e) => {
+
+          e.preventDefault();
+
+          Swal.fire({
+            title: "Autenticando...",
+            didOpen: async () => {
+                Swal.showLoading();
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+
+        const response = await submitLogin();
+
+        if (response.success) {
+            window.location.href = "/home";
+
+        } else {
+            Swal.fire({
+                title: "Falha ao autenticar!",
+                html: response.message,
+                icon: "error",
+            });
+        }
+    });
+
+
+        async function submitLogin() {
+            try{
+                const form = document.querySelector("#login-form");
+                const formData = new FormData(form);
+        
+                const response = await fetch("/api/login", {
+                  method: "POST",
+                  body: formData,
+                });
+        
+                const data = await response.json();
+                return data;
+
+            } catch(error){
+                return {
+                    success: false,
+                    message: "Erro na conexão. Tente novamente."
+                }
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
